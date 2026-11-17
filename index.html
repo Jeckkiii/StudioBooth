@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aesthetic Studio PhotoBooth ✨ | Korean 4-Cuts & Polaroid</title>
+  <meta name="description" content="Studio-quality web photobooth with HD camera, natural optical bokeh depth-of-field, clean aesthetic filters, and instant download.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <i class="fa-solid fa-camera-retro"></i>
+        <span>StudioBooth<span>.pro</span></span>
+      </div>
+      <div class="header-badges">
+        <span class="badge"><i class="fa-solid fa-camera"></i> HD Camera & Natural Bokeh</span>
+        <button id="themeToggleBtn" class="icon-btn-ghost" title="Ganti Mode Gelap/Terang">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Left Panel: Camera & Live Controls -->
+      <section class="booth-stage" id="boothStage">
+        <!-- Flash Overlay for Camera Shutter -->
+        <div class="flash-screen" id="flashOverlay"></div>
+        
+        <!-- Live Countdown Overlay -->
+        <div class="countdown-overlay" id="countdownOverlay">
+          <span id="countdownNumber">3</span>
+        </div>
+
+        <div class="camera-wrapper" id="cameraWrapper">
+          <video id="cameraVideo" autoplay playsinline muted></video>
+          
+          <!-- Natural Optical Lens Bokeh Vignette Overlay -->
+          <div class="natural-bokeh-layer" id="naturalBokehLayer"></div>
+
+          <div class="camera-overlay-guides" id="cameraGuides">
+            <div class="grid-line horizontal"></div>
+            <div class="grid-line vertical"></div>
+          </div>
+
+          <div class="camera-placeholder" id="cameraPlaceholder">
+            <i class="fa-solid fa-camera"></i>
+            <p>Kamera belum aktif</p>
+            <button id="startCamBtn" class="primary-btn pulse">
+              <i class="fa-solid fa-power-off"></i> Nyalakan Kamera HD
+            </button>
+          </div>
+
+          <!-- Camera Resolution & Status Pill -->
+          <div class="cam-quality-tag" id="camQualityTag">
+            <i class="fa-solid fa-circle-check"></i> HD Mode
+          </div>
+
+          <!-- Shutter Sequence Progress -->
+          <div class="shot-progress" id="shotProgress" style="display: none;">
+            <span>Foto <b id="currentShotNum">1</b> dari <b id="totalShotsNum">4</b></span>
+          </div>
+        </div>
+
+        <!-- Camera Control Bar -->
+        <div class="camera-controls">
+          <button id="switchCameraBtn" class="control-btn" title="Ganti Kamera (Depan/Belakang)">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Flip Cam</span>
+          </button>
+          <button id="mirrorCameraBtn" class="control-btn active" title="Cermin Kamera">
+            <i class="fa-solid fa-arrows-left-right"></i>
+            <span>Mirror</span>
+          </button>
+          
+          <!-- BIG CAPTURE BUTTON -->
+          <button id="captureBtn" class="shutter-btn" title="Ambil Foto">
+            <div class="shutter-inner">
+              <i class="fa-solid fa-camera"></i>
+            </div>
+          </button>
+
+          <button id="gridToggleBtn" class="control-btn active" title="Garis Bantu / Grid">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <span>Grid</span>
+          </button>
+          <button id="resetBoothBtn" class="control-btn danger" title="Mulai Ulang">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+            <span>Reset</span>
+          </button>
+        </div>
+
+        <!-- Shots Strip Thumbnails in progress -->
+        <div class="shots-preview-bar" id="shotsPreviewBar">
+          <div class="thumb-slot" data-index="0"><span>1</span></div>
+          <div class="thumb-slot" data-index="1"><span>2</span></div>
+          <div class="thumb-slot" data-index="2"><span>3</span></div>
+          <div class="thumb-slot" data-index="3"><span>4</span></div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Customization & Preview -->
+      <aside class="booth-customizer">
+        <!-- Tabs Navigation -->
+        <div class="customizer-tabs">
+          <button class="tab-btn active" data-tab="lens">
+            <i class="fa-solid fa-aperture"></i> Lensa & Bokeh
+          </button>
+          <button class="tab-btn" data-tab="filters">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Filter
+          </button>
+          <button class="tab-btn" data-tab="frames">
+            <i class="fa-solid fa-crop-simple"></i> Bingkai
+          </button>
+          <button class="tab-btn" data-tab="settings">
+            <i class="fa-solid fa-sliders"></i> Format
+          </button>
+          <button class="tab-btn" data-tab="text">
+            <i class="fa-solid fa-font"></i> Teks
+          </button>
+        </div>
+
+        <div class="tab-content-wrapper">
+          <!-- TAB 1: NATURAL BOKEH & LENS -->
+          <div class="tab-pane active" id="pane-lens">
+            <div class="config-group inline-row">
+              <div>
+                <label><i class="fa-solid fa-circle-dot"></i> Bokeh Alami (Optical Depth of Field)</label>
+                <p class="section-hint" style="margin: 0;">Fokus tajam pada wajah, latar belakang tepi blur lembut seperti lensa DSLR</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="bokehToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="config-group" id="bokehSliderGroup">
+              <div class="label-with-val">
+                <label><i class="fa-solid fa-sliders"></i> Kedalaman Blur Bokeh</label>
+                <span id="bokehLevelVal" class="val-badge">Lembut (f/2.0)</span>
+              </div>
+              <div class="chip-options" id="bokehLevelChips">
+                <button class="chip" data-level="subtle">Halus (f/2.8)</button>
+                <button class="chip active" data-level="medium">Lembut (f/2.0)</button>
+                <button class="chip" data-level="deep">Mendalam (f/1.4)</button>
+              </div>
+            </div>
+
+            <div class="config-group inline-row">
+              <div>
+                <label><i class="fa-solid fa-wand-magic"></i> Auto Sharpness & Clarity HD</label>
+                <p class="section-hint" style="margin: 0;">Meningkatkan kejernihan kamera webcam agar tidak buram / kusam</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="clarityToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="config-group inline-row">
+              <div>
+                <label><i class="fa-solid fa-cube"></i> Efek 3D Card Tilt</label>
+                <p class="section-hint" style="margin: 0;">Sensasi kartu fisik miring 3D saat disentuh / disorot kursor</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="tilt3dToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TAB 2: NATURAL FILTERS -->
+          <div class="tab-pane" id="pane-filters">
+            <p class="section-hint">Filter warna natural & estetik ala studio Korea:</p>
+            <div class="filters-grid" id="filtersGrid">
+              <button class="filter-card active" data-filter="natural">
+                <div class="filter-thumb filter-natural"></div>
+                <span>Studio HD</span>
+              </button>
+              <button class="filter-card" data-filter="korean-clean">
+                <div class="filter-thumb filter-korean-clean"></div>
+                <span>K-Clean ✨</span>
+              </button>
+              <button class="filter-card" data-filter="kodak-film">
+                <div class="filter-thumb filter-kodak-film"></div>
+                <span>Kodak 35mm 🎞️</span>
+              </button>
+              <button class="filter-card" data-filter="warm-glow">
+                <div class="filter-thumb filter-warm-glow"></div>
+                <span>Golden Hour 🌅</span>
+              </button>
+              <button class="filter-card" data-filter="classic-noir">
+                <div class="filter-thumb filter-classic-noir"></div>
+                <span>Classic B&W 🖤</span>
+              </button>
+              <button class="filter-card" data-filter="fuji-velvia">
+                <div class="filter-thumb filter-fuji-velvia"></div>
+                <span>Fuji Tone 🍃</span>
+              </button>
+              <button class="filter-card" data-filter="pastel-soft">
+                <div class="filter-thumb filter-pastel-soft"></div>
+                <span>Soft Pastel 🌸</span>
+              </button>
+              <button class="filter-card" data-filter="cyber-mood">
+                <div class="filter-thumb filter-cyber-mood"></div>
+                <span>Cool Moody 🌌</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 3: FRAMES -->
+          <div class="tab-pane" id="pane-frames">
+            <p class="section-hint">Pilih warna & gaya bingkai photobooth:</p>
+            
+            <label class="sub-label">Warna Frame</label>
+            <div class="color-palette" id="frameColorPalette">
+              <button class="color-dot active" style="--c: #ffffff;" data-color="#ffffff" title="Classic White"></button>
+              <button class="color-dot" style="--c: #111111;" data-color="#111111" title="Midnight Noir"></button>
+              <button class="color-dot" style="--c: #f5efe6;" data-color="#f5efe6" title="Aesthetic Cream"></button>
+              <button class="color-dot" style="--c: #ffe4e6;" data-color="#ffe4e6" title="Sweet Rose"></button>
+              <button class="color-dot" style="--c: #ede9fe;" data-color="#ede9fe" title="Lilac"></button>
+              <button class="color-dot" style="--c: #e0f2fe;" data-color="#e0f2fe" title="Soft Cyan"></button>
+              <button class="color-dot" style="--c: #dcfce7;" data-color="#dcfce7" title="Sage Green"></button>
+              <button class="color-dot" style="--c: #fef08a;" data-color="#fef08a" title="Warm Butter"></button>
+            </div>
+
+            <label class="sub-label" style="margin-top: 15px;">Motif Garis Tepi Frame</label>
+            <div class="chip-options" id="frameThemeOptions">
+              <button class="chip active" data-theme="solid">Polos Minimalis</button>
+              <button class="chip" data-theme="border-line">Double Border Line</button>
+              <button class="chip" data-theme="dots">Subtle Dots</button>
+            </div>
+          </div>
+
+          <!-- TAB 4: SETTINGS / LAYOUT -->
+          <div class="tab-pane" id="pane-settings">
+            <div class="config-group">
+              <label><i class="fa-solid fa-film"></i> Format / Tata Letak</label>
+              <div class="chip-options" id="layoutOptions">
+                <button class="chip active" data-layout="4cuts">
+                  <i class="fa-solid fa-grip-vertical"></i> 4-Cuts Strip
+                </button>
+                <button class="chip" data-layout="2x2">
+                  <i class="fa-solid fa-table-cells"></i> 2x2 Grid (4 Foto)
+                </button>
+                <button class="chip" data-layout="3cuts">
+                  <i class="fa-solid fa-bars"></i> 3-Cuts Strip
+                </button>
+                <button class="chip" data-layout="polaroid">
+                  <i class="fa-solid fa-image"></i> Single Polaroid
+                </button>
+              </div>
+            </div>
+
+            <div class="config-group">
+              <label><i class="fa-solid fa-stopwatch"></i> Timer Hitung Mundur</label>
+              <div class="chip-options" id="timerOptions">
+                <button class="chip" data-seconds="3">3 Detik</button>
+                <button class="chip active" data-seconds="5">5 Detik</button>
+                <button class="chip" data-seconds="8">8 Detik</button>
+              </div>
+            </div>
+
+            <div class="config-group inline-row">
+              <label><i class="fa-solid fa-volume-high"></i> Suara Shutter & Hitungan</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="soundToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TAB 5: TEXT & FOOTER -->
+          <div class="tab-pane" id="pane-text">
+            <div class="config-group">
+              <label><i class="fa-solid fa-pen-nib"></i> Teks Judul Footer</label>
+              <input type="text" id="footerTextInput" class="text-input" placeholder="MEMORIES ♡" value="MEMORIES ♡">
+            </div>
+
+            <div class="config-group inline-row">
+              <label><i class="fa-solid fa-calendar-days"></i> Tambahkan Tanggal Otomatis</label>
+              <label class="toggle-switch">
+                <input type="checkbox" id="dateToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Result Strip Live Preview & 3D Interactive Card Stage -->
+        <div class="preview-section">
+          <div class="preview-header">
+            <h4><i class="fa-solid fa-eye"></i> Hasil Foto Strip</h4>
+            <span class="status-tag" id="statusTag">Siap Ambil Foto</span>
+          </div>
+
+          <!-- 3D Perspective Container -->
+          <div class="canvas-stage-wrapper" id="card3dPerspectiveWrapper">
+            <div class="strip-3d-card" id="strip3dCard">
+              <div class="strip-container" id="stripContainer">
+                <canvas id="resultCanvas"></canvas>
+                <!-- 3D Natural Glare Lighting -->
+                <div class="card-glare" id="cardGlare"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Download & Action Buttons -->
+          <div class="export-actions">
+            <button id="downloadBtn" class="primary-btn full-width" disabled>
+              <i class="fa-solid fa-download"></i> Unduh Foto HD (.PNG)
+            </button>
+            <div class="action-sub-buttons">
+              <button id="printBtn" class="secondary-btn" disabled>
+                <i class="fa-solid fa-print"></i> Cetak / Print
+              </button>
+              <button id="retakeBtn" class="secondary-btn" disabled>
+                <i class="fa-solid fa-rotate-left"></i> Foto Ulang
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>StudioBooth Pro • Kamera HD & Natural Bokeh • 100% Client-Side Privacy • Siap deploy ke <b>GitHub Pages</b></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
