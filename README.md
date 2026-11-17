@@ -2,7 +2,7 @@
 
 Aesthetic Web PhotoBooth dengan **kualitas kamera HD, efek bokeh optik alami (DSLR Depth of Field), filter studio natural ala Korea, dan kartu 3D interaktif**.
 
-Dibuat murni dengan **HTML5, CSS3, dan Vanilla JavaScript** tanpa library/framework berat, 100% aman untuk privasi, dan **langsung siap dideploy ke GitHub Pages (`github.io`)**!
+Dibuat murni dengan **HTML5, CSS3, dan Vanilla JavaScript** tanpa library/framework berat, 100% aman untuk privasi!
 
 ---
 
@@ -47,20 +47,3 @@ Dibuat murni dengan **HTML5, CSS3, dan Vanilla JavaScript** tanpa library/framew
    - Foto otomatis terhapus seketika tombol **Reset / Foto Ulang** diklik atau halaman di-refresh.
 
 ---
-
-## 🌐 Cara Deploy ke GitHub Pages (github.io):
-1. Buat repositori baru di [GitHub](https://github.com/new) (contoh: `photobooth`).
-2. Di folder project (`d:\yuhuuuu`), jalankan:
-   ```bash
-   git init
-   git add .
-   git commit -m "StudioBooth Pro: HD Camera & Natural Bokeh"
-   git branch -M main
-   git remote add origin https://github.com/USERNAME_ANDA/photobooth.git
-   git push -u origin main
-   ```
-3. Buka repositori di GitHub -> **Settings** -> **Pages** -> pilih branch **main** -> klik **Save**.
-4. Website Anda siap digunakan di:
-   ```
-   https://USERNAME_ANDA.github.io/photobooth/
-   ```
